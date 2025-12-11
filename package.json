@@ -1,0 +1,20 @@
+{
+  "name": "webrtc-video-call-application",
+  "version": "1.0.0",
+  "description": "WebRTC peer-to-peer video calling application",
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install",
+    "server": "cd server && npm start",
+    "client": "cd client && npm start",
+    "dev": "echo 'Please run server and client in separate terminals' && echo 'Terminal 1: npm run server' && echo 'Terminal 2: npm run client'"
+  },
+  "keywords": [
+    "webrtc",
+    "video-call",
+    "react",
+    "socket.io",
+    "peer-to-peer"
+  ],
+  "author": "",
+  "license": "MIT"
+}
