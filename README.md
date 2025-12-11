@@ -25,7 +25,7 @@ A peer-to-peer video calling application built with React and WebRTC that allows
 - **Socket.io Client** for real-time communication
 - **WebRTC API** for peer-to-peer connections
 - **UUID** for generating unique room IDs
-- **CSS** for styling
+- **Tailwind CSS** for styling
 
 ### Backend
 - **Node.js** with Express
@@ -303,17 +303,6 @@ The application handles various error scenarios:
 - Close other bandwidth-intensive applications
 - Try a different browser
 
-## Future Enhancements (Optional)
-
-- [ ] Screen sharing capability
-- [ ] Text chat alongside video
-- [ ] Support for more than 2 participants
-- [ ] Recording functionality
-- [ ] Background blur/replacement
-- [ ] Network quality indicator
-- [ ] Automatic reconnection on connection drop
-- [ ] TURN server support for restricted networks
-
 ## Development
 
 ### Running in Development Mode
@@ -329,34 +318,3 @@ npm run dev  # Uses nodemon for auto-restart
 cd client
 npm start
 ```
-
-## Production Deployment
-
-### Server Deployment (Heroku Example)
-
-1. Create a Heroku app
-2. Set environment variables if needed
-3. Deploy the server directory
-4. Update SOCKET_SERVER_URL in client to production URL
-
-### Client Deployment (Vercel/Netlify Example)
-
-1. Build the client: `npm run build`
-2. Deploy the build folder
-3. Ensure proper environment variables are set
-
-## License
-
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Support
-
-For issues or questions, please open an issue in the repository.
-
----
-
-**Note**: This application is designed for educational purposes and demonstrates WebRTC peer-to-peer video calling capabilities.

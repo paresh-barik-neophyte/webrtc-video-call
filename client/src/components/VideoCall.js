@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import io from 'socket.io-client';
-import './VideoCall.css';
 
 const ICE_SERVERS = {
   iceServers: [
@@ -353,64 +352,83 @@ function VideoCall() {
   };
 
   return (
-    <div className="video-call-container">
-      <div className="header">
-        <div className="room-info">
-          <span className="room-label">Room ID:</span>
-          <span className="room-id">{roomId}</span>
-          <button className="copy-btn" onClick={copyRoomId}>
+    <div className="min-h-screen bg-[#1a1a2e] flex flex-col p-5">
+      <div className="flex justify-between items-center mb-5 flex-wrap gap-4">
+        <div className="flex items-center gap-2.5 bg-white/10 px-5 py-3 rounded-[10px] text-white">
+          <span className="font-semibold text-[#b8b8b8]">Room ID:</span>
+          <span className="font-mono bg-white/10 px-2.5 py-1 rounded-[5px] text-sm">{roomId}</span>
+          <button 
+            className="bg-primary text-white border-none px-4 py-2 rounded-[5px] cursor-pointer text-sm transition-all duration-300 hover:bg-[#5568d3]" 
+            onClick={copyRoomId}
+          >
             {copied ? 'Copied!' : 'Copy'}
           </button>
         </div>
-        <div className={`status ${connectionStatus.toLowerCase().replace(' ', '-')}`}>
+        <div className={`px-5 py-3 rounded-[10px] font-semibold text-white ${
+          connectionStatus.toLowerCase() === 'connected' ? 'bg-green-600/20 text-green-400' :
+          connectionStatus.toLowerCase().includes('connecting') || connectionStatus.toLowerCase().includes('initializing') ? 'bg-yellow-500/20 text-yellow-400' :
+          connectionStatus.toLowerCase().includes('disconnected') || connectionStatus.toLowerCase().includes('failed') ? 'bg-red-600/20 text-red-400' :
+          'bg-white/10'
+        }`}>
           Status: {connectionStatus}
         </div>
       </div>
 
       {error && (
-        <div className="error-banner">
+        <div className="bg-red-600 text-white px-5 py-4 rounded-[10px] mb-5 flex justify-between items-center">
           {error}
-          <button className="close-error" onClick={() => setError('')}>
+          <button 
+            className="bg-white/20 border-none text-white text-2xl cursor-pointer w-[30px] h-[30px] rounded-full flex items-center justify-center p-0 hover:bg-white/30" 
+            onClick={() => setError('')}
+          >
             ×
           </button>
         </div>
       )}
 
-      <div className="video-grid">
-        <div className="video-container local">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1 mb-5">
+        <div className="relative bg-black rounded-[15px] overflow-hidden aspect-video shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
           <video
             ref={localVideoRef}
             autoPlay
             playsInline
             muted
-            className="video"
+            className="w-full h-full object-cover"
           />
-          <div className="video-label">You</div>
-          {!isVideoEnabled && <div className="video-off-overlay">Video Off</div>}
+          <div className="absolute bottom-4 left-4 bg-black/70 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+            You
+          </div>
+          {!isVideoEnabled && (
+            <div className="absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center text-white text-xl">
+              Video Off
+            </div>
+          )}
         </div>
 
-        <div className="video-container remote">
+        <div className="relative bg-black rounded-[15px] overflow-hidden aspect-video shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
           <video
             ref={remoteVideoRef}
             autoPlay
             playsInline
-            className="video"
+            className="w-full h-full object-cover"
           />
-          <div className="video-label">
+          <div className="absolute bottom-4 left-4 bg-black/70 text-white px-4 py-2 rounded-lg text-sm font-semibold">
             {remoteStream ? 'Remote User' : 'Waiting for participant...'}
           </div>
           {!remoteStream && (
-            <div className="waiting-overlay">
-              <div className="spinner"></div>
-              <p>{isCreator ? 'Share the Room ID to invite someone' : 'Connecting...'}</p>
+            <div className="absolute top-0 left-0 w-full h-full bg-black/80 flex flex-col items-center justify-center text-white">
+              <div className="w-[50px] h-[50px] border-4 border-white/30 border-t-primary rounded-full animate-spin mb-5"></div>
+              <p className="text-center px-5">{isCreator ? 'Share the Room ID to invite someone' : 'Connecting...'}</p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="controls">
+      <div className="flex justify-center gap-5 p-5 bg-white/5 rounded-[15px]">
         <button
-          className={`control-btn ${!isAudioEnabled ? 'disabled' : ''}`}
+          className={`w-[60px] h-[60px] border-none rounded-full text-3xl cursor-pointer transition-all duration-300 flex items-center justify-center ${
+            !isAudioEnabled ? 'bg-red-600/30 hover:bg-red-600/40' : 'bg-white/10 hover:bg-white/20'
+          } text-white hover:scale-110`}
           onClick={toggleAudio}
           title={isAudioEnabled ? 'Mute' : 'Unmute'}
         >
@@ -418,14 +436,20 @@ function VideoCall() {
         </button>
 
         <button
-          className={`control-btn ${!isVideoEnabled ? 'disabled' : ''}`}
+          className={`w-[60px] h-[60px] border-none rounded-full text-3xl cursor-pointer transition-all duration-300 flex items-center justify-center ${
+            !isVideoEnabled ? 'bg-red-600/30 hover:bg-red-600/40' : 'bg-white/10 hover:bg-white/20'
+          } text-white hover:scale-110`}
           onClick={toggleVideo}
           title={isVideoEnabled ? 'Turn Off Video' : 'Turn On Video'}
         >
           {isVideoEnabled ? '📹' : '📷'}
         </button>
 
-        <button className="control-btn end-call" onClick={endCall} title="End Call">
+        <button 
+          className="w-[60px] h-[60px] border-none rounded-full text-3xl cursor-pointer bg-red-600 text-white transition-all duration-300 flex items-center justify-center hover:bg-red-700 hover:scale-110" 
+          onClick={endCall} 
+          title="End Call"
+        >
           📞
         </button>
       </div>
