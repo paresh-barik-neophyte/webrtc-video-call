@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { Mic, MicOff, Video, VideoOff, PhoneOff } from 'lucide-react';
 
 const ICE_SERVERS = {
   iceServers: [
@@ -465,31 +466,31 @@ function VideoCall() {
 
       <div className="flex justify-center gap-5 p-5 bg-white/5 rounded-[15px]">
         <button
-          className={`w-[60px] h-[60px] border-none rounded-full text-3xl cursor-pointer transition-all duration-300 flex items-center justify-center ${
-            !isAudioEnabled ? 'bg-red-600/30 hover:bg-red-600/40' : 'bg-white/10 hover:bg-white/20'
+          className={`w-[60px] h-[60px] border-none rounded-full cursor-pointer transition-all duration-300 flex items-center justify-center ${
+            !isAudioEnabled ? 'bg-red-600 hover:bg-red-700' : 'bg-white/10 hover:bg-white/20'
           } text-white hover:scale-110`}
           onClick={toggleAudio}
           title={isAudioEnabled ? 'Mute' : 'Unmute'}
         >
-          {isAudioEnabled ? '🎤' : '🔇'}
+          {isAudioEnabled ? <Mic size={24} /> : <MicOff size={24} />}
         </button>
 
         <button
-          className={`w-[60px] h-[60px] border-none rounded-full text-3xl cursor-pointer transition-all duration-300 flex items-center justify-center ${
-            !isVideoEnabled ? 'bg-red-600/30 hover:bg-red-600/40' : 'bg-white/10 hover:bg-white/20'
+          className={`w-[60px] h-[60px] border-none rounded-full cursor-pointer transition-all duration-300 flex items-center justify-center ${
+            !isVideoEnabled ? 'bg-red-600 hover:bg-red-700' : 'bg-white/10 hover:bg-white/20'
           } text-white hover:scale-110`}
           onClick={toggleVideo}
           title={isVideoEnabled ? 'Turn Off Video' : 'Turn On Video'}
         >
-          {isVideoEnabled ? '📹' : '📷'}
+          {isVideoEnabled ? <Video size={24} /> : <VideoOff size={24} />}
         </button>
 
         <button 
-          className="w-[60px] h-[60px] border-none rounded-full text-3xl cursor-pointer bg-red-600 text-white transition-all duration-300 flex items-center justify-center hover:bg-red-700 hover:scale-110" 
+          className="w-[60px] h-[60px] border-none rounded-full cursor-pointer bg-red-600 text-white transition-all duration-300 flex items-center justify-center hover:bg-red-700 hover:scale-110" 
           onClick={endCall} 
           title="End Call"
         >
-          📞
+          <PhoneOff size={24} />
         </button>
       </div>
     </div>
