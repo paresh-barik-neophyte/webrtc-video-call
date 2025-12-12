@@ -167,10 +167,15 @@ function VideoCall() {
     const peerConnection = new RTCPeerConnection(ICE_SERVERS);
 
     // Add local stream tracks to peer connection
-    if (localStream) {
-      localStream.getTracks().forEach((track) => {
-        peerConnection.addTrack(track, localStream);
+    const stream = localVideoRef.current?.srcObject;
+    if (stream) {
+      console.log('Adding local tracks to peer connection:', stream.getTracks().length);
+      stream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, stream);
+        console.log('Added track:', track.kind);
       });
+    } else {
+      console.error('No local stream available!');
     }
 
     // Handle incoming remote stream
