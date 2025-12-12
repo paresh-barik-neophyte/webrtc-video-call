@@ -186,10 +186,14 @@ function VideoCall() {
     // Handle ICE candidates
     peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
+        console.log('Generated ICE candidate:', event.candidate.type);
         socketRef.current.emit('ice-candidate', {
           candidate: event.candidate,
           roomId,
         });
+        console.log('Sent ICE candidate to server');
+      } else {
+        console.log('All ICE candidates have been sent');
       }
     };
 
@@ -215,6 +219,21 @@ function VideoCall() {
         default:
           break;
       }
+    };
+
+    // Add ICE connection state logging
+    peerConnection.oniceconnectionstatechange = () => {
+      console.log('ICE connection state:', peerConnection.iceConnectionState);
+    };
+
+    // Add ICE gathering state logging
+    peerConnection.onicegatheringstatechange = () => {
+      console.log('ICE gathering state:', peerConnection.iceGatheringState);
+    };
+
+    // Add signaling state logging
+    peerConnection.onsignalingstatechange = () => {
+      console.log('Signaling state:', peerConnection.signalingState);
     };
 
     peerConnectionRef.current = peerConnection;
