@@ -141,6 +141,7 @@ io.on('connection', (socket) => {
     const targetId = room.creator === socket.id ? room.joiner : room.creator;
     if (targetId) {
       io.to(targetId).emit('ice-candidate', { candidate, from: socket.id });
+      console.log(`ICE candidate sent from ${socket.id} to ${targetId}`);
     }
   });
 
